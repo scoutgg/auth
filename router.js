@@ -11,7 +11,9 @@ module.exports = function() {
 
   passport.use('jwt', require('./strategies/jwt'))
   passport.use('local', require('./strategies/local'))
-  passport.use('facebook', require('./strategies/facebook'))
+  if(config.auth.facebook) {
+    passport.use('facebook', require('./strategies/facebook'))
+  }
 
   const auth = {
     jwt: passport.authenticate('jwt', {session: false}),
@@ -27,7 +29,7 @@ module.exports = function() {
     }
   }
 
-  return router
+  router
     .use(passport.initialize())
     // Local routes
     .post('/register', require('./routes/create'))
@@ -37,6 +39,11 @@ module.exports = function() {
     .get('/forgot/:email', require('./routes/forgot'))
     .get('/', auth.jwt, require('./routes/profile'))
     // Social logins
-    .get('/facebook', auth.facebook, require('./routes/create'))
-    .get('/facebook/callback', auth.facebook, require('./routes/social'))
+  if(config.auth.facebook) {
+    router
+      .get('/facebook', auth.facebook, require('./routes/create'))
+      .get('/facebook/callback', auth.facebook, require('./routes/social'))
+  }
+    
+  return router
 }
