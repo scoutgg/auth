@@ -20,10 +20,11 @@ module.exports = function() {
     local: passport.authenticate('local', {session: false}),
     facebook: function(req, res, next) {
       const state = req.query.state || encodeURIComponent('{}')
-      let uri = `/facebook/callback?success=${encodeURIComponent(req.query.success || '/')}&state=${state}`
+      let uri = `/facebook/callback?success=${encodeURIComponent(req.query.success || '/')}`
       passport.authenticate('facebook', {
         callbackURL: config.authEndPoint + uri,
         session: false,
+        state,
         scope: config.facebook.scope,
         failureRedirect: req.query.failure || '/'
       })(req, res, next)
