@@ -6,7 +6,8 @@ module.exports = new FacebookStrategy({
   clientID: config.facebook.clientId,
   clientSecret: config.facebook.clientSecret,
   callbackURL: config.authEndPoint + '/facebook/callback',
-  profileFields: ['id', 'emails', 'name']
+  profileFields: ['id', 'emails', 'name'],
+  state: true,
 }, function(accessToken, refreshToken, profile, done) {
   if(profile) return done(null, profile)
   return done(null, false)
