@@ -14,20 +14,25 @@ module.exports = function() {
   if(config.facebook) {
     passport.use('facebook', require('./strategies/facebook'))
   }
+  if(config.google) {
+    passport.use('google', require('./strategies/google'))
+  }
 
   const auth = {
     jwt: passport.authenticate('jwt', {session: false}),
     local: passport.authenticate('local', {session: false}),
-    facebook: function(req, res, next) {
-      const state = req.query.state || encodeURIComponent('{}')
+    facebook(req, res, next) {
       let uri = `/facebook/callback?success=${encodeURIComponent(req.query.success || '/')}`
       passport.authenticate('facebook', {
         callbackURL: config.authEndPoint + uri,
-        session: false,
-        state,
         scope: config.facebook.scope,
         failureRedirect: req.query.failure || '/'
       })(req, res, next)
+    },
+    google(req, res, next) {
+      passport.authenticate('google', {
+        scope: ['https://www.googleapis.com/auth/plus.login']
+      });
     }
   }
 
@@ -46,6 +51,6 @@ module.exports = function() {
       .get('/facebook', auth.facebook, require('./routes/create'))
       .get('/facebook/callback', auth.facebook, require('./routes/social'))
   }
-    
+
   return router
 }
