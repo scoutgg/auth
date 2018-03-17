@@ -26,13 +26,15 @@ module.exports = function() {
       passport.authenticate('facebook', {
         callbackURL: config.authEndPoint + uri,
         scope: config.facebook.scope,
+        session: false,
         failureRedirect: req.query.failure || '/'
       })(req, res, next)
     },
     google(req, res, next) {
       passport.authenticate('google', {
-        scope: ['https://www.googleapis.com/auth/plus.login']
-      });
+        session: false,
+        scope: ['email'],
+      })(req, res, next)
     }
   }
 
@@ -50,6 +52,11 @@ module.exports = function() {
     router
       .get('/facebook', auth.facebook, require('./routes/create'))
       .get('/facebook/callback', auth.facebook, require('./routes/social'))
+  }
+  if(config.google) {
+    router
+      .get('/google', auth.google, require('./routes/create'))
+      .get('/google/callback', auth.google, require('./routes/social'))
   }
 
   return router

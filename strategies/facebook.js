@@ -8,6 +8,7 @@ module.exports = new FacebookStrategy({
   callbackURL: config.authEndPoint + '/facebook/callback',
   profileFields: ['id', 'emails', 'name'],
 }, function(accessToken, refreshToken, profile, done) {
+  profile.network = 'facebook'
   if(profile) return done(null, profile)
   return done(null, false)
 })

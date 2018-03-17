@@ -12,9 +12,10 @@ module.exports = function local(req, res, next) {
     }
     payload = Object.assign({}, data, payload)
     const token = jwt.encode(payload, config.secretOrKey)
-    const endpoint = req.query.success || '/'
+    const endpoint = config.socialRedirect
     const append = endpoint.includes('?')
     const url = `${endpoint}${append ? '&' : '?'}token=${token}`
+    console.log('redirect time', url)
     res.redirect(url)
   })
 }

@@ -8,7 +8,8 @@ module.exports = new GoogleStrategy({
     callbackURL: config.authEndPoint + '/google/callback'
   },
   function(token, tokenSecret, profile, done) {
+    profile.network = 'google'
     if(profile) return done(null, profile)
     return done(null, false)
   }
-));
+)
