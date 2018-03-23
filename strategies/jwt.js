@@ -6,7 +6,7 @@ const auth = require('../index')
 const config = auth.config
 
 let options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeader(),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   aud: config.audience,
   iss: config.issuer,
   secretOrKey: config.secretOrKey
