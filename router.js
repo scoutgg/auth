@@ -24,7 +24,7 @@ module.exports = function() {
     facebook(req, res, next) {
       let uri = `/facebook/callback?success=${encodeURIComponent(req.query.success || '/')}`
       passport.authenticate('facebook', {
-        callbackURL: (req.overrideAuthEndpoint || config.authEndPoint) + uri,
+        callbackURL: (req.authEndPointOverride || config.authEndPoint) + uri,
         scope: config.facebook.scope,
         session: false,
         failureRedirect: req.query.failure || '/'
@@ -33,6 +33,7 @@ module.exports = function() {
     google(req, res, next) {
       passport.authenticate('google', {
         session: false,
+        callbackURL: (req.authEndPointOverride || config.authEndPoint) + uri,
         scope: ['email'],
       })(req, res, next)
     }

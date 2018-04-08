@@ -5,7 +5,6 @@ const config = auth.config
 module.exports = new GoogleStrategy({
     clientID: config.google.clientId,
     clientSecret: config.google.clientSecret,
-    callbackURL: config.authEndPoint + '/google/callback'
   },
   function(token, tokenSecret, profile, done) {
     profile.network = 'google'
