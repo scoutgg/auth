@@ -12,7 +12,7 @@ module.exports = function local(req, res, next) {
     }
     payload = Object.assign({}, data, payload)
     const token = jwt.encode(payload, config.secretOrKey)
-    const endpoint = config.socialRedirect
+    const endpoint = req.socialRedirectOverride || config.socialRedirect
     const append = endpoint.includes('?')
     const url = `${endpoint}${append ? '&' : '?'}token=${token}`
     res.redirect(url)
