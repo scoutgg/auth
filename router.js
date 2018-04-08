@@ -24,7 +24,7 @@ module.exports = function() {
     facebook(req, res, next) {
       let uri = `/facebook/callback?success=${encodeURIComponent(req.query.success || '/')}`
       passport.authenticate('facebook', {
-        callbackURL: config.authEndPoint + uri,
+        callbackURL: (req.overrideAuthEndpoint || config.authEndPoint) + uri,
         scope: config.facebook.scope,
         session: false,
         failureRedirect: req.query.failure || '/'
