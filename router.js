@@ -31,6 +31,7 @@ module.exports = function() {
       })(req, res, next)
     },
     google(req, res, next) {
+      let uri = `/google/callback`
       passport.authenticate('google', {
         session: false,
         callbackURL: (req.authEndPointOverride || config.authEndPoint) + uri,
