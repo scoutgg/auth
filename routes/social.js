@@ -5,6 +5,8 @@ const config = auth.config
 
 module.exports = function local(req, res, next) {
   auth.social(req, res, next).then((data)=> {
+    // case of redirecting on starpick
+    if(res.headersSent) return res.end()
     let payload = {
       iss: config.issuer,
       aud: config.audience,
